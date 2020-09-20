@@ -1,6 +1,6 @@
-# Kneron Host Lib
+# Kneron Computer Lab
 
-This project contains python examples for Kneron USB dongle
+This project contains python examples for Kneron Computer Lab Book
 
 This is a brief introduction. For more detailed documents, please visit <http://doc.kneron.com/pythondocs>.
 
