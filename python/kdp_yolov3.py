@@ -5,10 +5,11 @@ import ctypes
 from common import constants
 from python_wrapper import kdp_wrapper
 from python_wrapper import kdp_examples
+from python_wrapper import update_app
+from python_wrapper import dme_keras
 from kdp_host_api import (kdp_add_dev, kdp_init_log, kdp_lib_de_init, kdp_lib_init, kdp_lib_start)
 
 # Define KL520 parameters
-KDP_UART_DEV    = 0
 KDP_USB_DEV     = 1
 IMG_SRC_WIDTH	= 640
 IMG_SRC_HEIGHT	= 480
@@ -33,7 +34,7 @@ def detect_image(dev_idx, user_id):
     # Start ISI mode
     if (kdp_wrapper.start_isi(dev_idx, ISI_YOLO_ID, IMG_SRC_WIDTH, IMG_SRC_HEIGHT)):
         return -1
-    
+
     # Perform image inference
     while image_flag:
         image = cv2.imread(image_path)
@@ -70,8 +71,8 @@ def detect_camera(dev_idx, user_id):
     cv2.destroyAllWindows()
 
 # Read input arguments
-parser = argparse.ArgumentParser(description="Run yolo v3 object detection")
-parser.add_argument('-t', '--task_name', help=("image; camera"))
+parser = argparse.ArgumentParser(description="Kneron Neural Processing Unit")
+parser.add_argument('-t', '--task_name', help=("image, camera, update_app, dme_keras"), default="camera")
 args = parser.parse_args()
 
 # Initialize Kneron USB device
@@ -96,6 +97,10 @@ if (args.task_name == "image"):
     detect_image(dev_idx, user_id)
 elif (args.task_name == "camera"):
     detect_camera(dev_idx, user_id)
+elif (args.task_name == "update_app"):
+    update_app.user_test_update_app(dev_idx, user_id)
+elif (args.task_name == "dme_keras"):
+    dme_keras.user_test_dme_keras(dev_idx, user_id)
 
 # Exit Kneron USB device
 print("Exit kdp host lib ....\n")
